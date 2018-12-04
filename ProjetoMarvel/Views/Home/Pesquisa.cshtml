@@ -1,0 +1,15 @@
+﻿@model ProjetoMarvel.Models.PersonagemDTO
+@{
+    ViewBag.Title = "Pesquisa";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <img class="img-responsive" src="@Model.UrlImagem" alt="@Model.Nome" />
+    </div>
+    <div class="col-md-8">
+        <h3 class="text-center">@Model.Nome</h3>
+        <p>@Model.Descricao</p>
+    </div>
+</div>
+

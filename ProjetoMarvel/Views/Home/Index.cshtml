@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <div class="row">
+        <img src="~/images/universo_marvel.png" style="width:100%" />
+    </div> 
+    <div class="row">
+        <div id="custom-search-input">
+            <div class="input-group col-md-12">
+                <input type="text" class="form-control input-lg" placeholder="Digite o seu personagem favorito" id="texto-pesquisa"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-info btn-lg" type="button" id="btn-pesquisa">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var urlPesquisar = "/Home/Pesquisa";
+</script>
