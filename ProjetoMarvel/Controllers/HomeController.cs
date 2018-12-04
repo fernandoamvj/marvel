@@ -57,7 +57,7 @@ namespace ProjetoMarvel.Controllers
                     response.Content.ReadAsStringAsync().Result;
 
                 dynamic resultado = JsonConvert.DeserializeObject(conteudo);
-
+                var obteveRetorno = false;
                 personagem = new PersonagemDTO();
                 if (resultado.data.count > 0)
                 {
@@ -66,11 +66,16 @@ namespace ProjetoMarvel.Controllers
                     personagem.Descricao = resultado.data.results[0].description;
                     personagem.UrlImagem = resultado.data.results[0].thumbnail.path + "." +
                                            resultado.data.results[0].thumbnail.extension;
-                    PesquisaBusiness.InserePesquisa(textoPesquisa, true);
+                    foreach(var historia in resultado.data.results[0].stories)
+                    {
+                        personagem.Historias.Add(historia.name);
+                    }
+                    obteveRetorno = true;
+                    PesquisaBusiness.InserePesquisa(textoPesquisa, obteveRetorno);
                 }
                 else
                 {
-                    PesquisaBusiness.InserePesquisa(textoPesquisa, false);
+                    PesquisaBusiness.InserePesquisa(textoPesquisa, obteveRetorno);
                 }
 
             }
