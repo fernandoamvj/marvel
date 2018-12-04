@@ -34,50 +34,53 @@ namespace ProjetoMarvel.Controllers
 
         public ActionResult Pesquisa(string textoPesquisa)
         {
-            PersonagemDTO personagem;
-
-            using (var client = new HttpClient())
+            PersonagemDTO personagem = new PersonagemDTO();
+            if (!String.IsNullOrEmpty(textoPesquisa))
             {
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
-
-                string ts = DateTime.Now.Ticks.ToString();
-                string publicKey = "68bda7a37b1e938b8653b8fd0082043d";
-                string privateKey = "12b9a8eb3eec3714d5e658b378ff1ad30ec7ab32";
-                string baseUrl = "http://gateway.marvel.com/v1/public/";
-                string hash = GerarHash(ts, publicKey, privateKey);
-
-                HttpResponseMessage response = client.GetAsync(baseUrl +
-                    $"characters?ts={ts}&apikey={publicKey}&hash={hash}&" +
-                    $"name={Uri.EscapeUriString(textoPesquisa)}").Result;
-
-                response.EnsureSuccessStatusCode();
-                string conteudo =
-                    response.Content.ReadAsStringAsync().Result;
-
-                dynamic resultado = JsonConvert.DeserializeObject(conteudo);
-                var obteveRetorno = false;
-                personagem = new PersonagemDTO();
-                if (resultado.data.count > 0)
+                using (var client = new HttpClient())
                 {
-                    personagem.Id = resultado.data?.results[0].id;
-                    personagem.Nome = resultado.data?.results[0].name;
-                    personagem.Descricao = resultado.data.results[0].description;
-                    personagem.UrlImagem = resultado.data.results[0].thumbnail.path + "." +
-                                           resultado.data.results[0].thumbnail.extension;
-                    foreach(var historia in resultado.data.results[0].stories)
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    string ts = DateTime.Now.Ticks.ToString();
+                    string publicKey = "68bda7a37b1e938b8653b8fd0082043d";
+                    string privateKey = "12b9a8eb3eec3714d5e658b378ff1ad30ec7ab32";
+                    string baseUrl = "http://gateway.marvel.com/v1/public/";
+                    string hash = GerarHash(ts, publicKey, privateKey);
+
+                    HttpResponseMessage response = client.GetAsync(baseUrl +
+                        $"characters?ts={ts}&apikey={publicKey}&hash={hash}&" +
+                        $"name={Uri.EscapeUriString(textoPesquisa)}").Result;
+
+                    response.EnsureSuccessStatusCode();
+                    string conteudo =
+                        response.Content.ReadAsStringAsync().Result;
+
+                    dynamic resultado = JsonConvert.DeserializeObject(conteudo);
+                    var obteveRetorno = false;
+                    if (resultado.data.count > 0)
                     {
-                        personagem.Historias.Add(historia.name);
+                        personagem.Id = resultado.data?.results[0].id;
+                        personagem.Nome = resultado.data?.results[0].name;
+                        personagem.Descricao = resultado.data.results[0].description;
+                        personagem.UrlImagem = resultado.data.results[0].thumbnail.path + "." +
+                                               resultado.data.results[0].thumbnail.extension;
+                        personagem.Historias = new List<string>();
+                        foreach (var historia in resultado.data.results[0].stories.items)
+                        {
+                            string nome = historia.name;
+                            personagem.Historias.Add(nome);
+                        }
+                        obteveRetorno = true;
+                        PesquisaBusiness.InserePesquisa(textoPesquisa, obteveRetorno);
                     }
-                    obteveRetorno = true;
-                    PesquisaBusiness.InserePesquisa(textoPesquisa, obteveRetorno);
+                    else
+                    {
+                        PesquisaBusiness.InserePesquisa(textoPesquisa, obteveRetorno);
+                    }
                 }
-                else
-                {
-                    PesquisaBusiness.InserePesquisa(textoPesquisa, obteveRetorno);
-                }
-            }
+            }          
             return View (personagem);
         }
     }

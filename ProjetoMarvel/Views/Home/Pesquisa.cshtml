@@ -4,7 +4,7 @@
 }
 @if (!String.IsNullOrEmpty(Model.Nome))
 {
-    <div class="row">
+    <div class="container">
         <div class="col-md-4">
             <img class="img-responsive" src="@Model.UrlImagem" alt="@Model.Nome" />
         </div>
@@ -14,23 +14,28 @@
         </div>
     </div>
     <div class="container">
-        <h2>Histórias</h2>
-        <ul class="list-group">
-            @foreach (var historia in Model.Historias)
-            {
-                <li class="list-group-item">@historia</li>
-            }
-        </ul>
+        <h2 class="text-center">Histórias</h2>
+            <div class="col-md-12">
+                <ul class="list-group">
+                    @foreach (var historia in Model.Historias)
+                    {
+                        <li class="list-group-item">@historia</li>
+                    }
+                </ul>
+            </div>
     </div>
 }
 else
 {
-    <div class="row">
-        <div class="col-md-8">
-            <h3 class="text-center">Ops...</h3>
-            <p>Sua pesquisa não encontrou nenhum registro.</p>
-            <p>Caso queira consultar alguns nomes para pesquisar <a href="https://pt.wikipedia.org/wiki/Universo_Marvel#Her%C3%B3is_Marvel">clique aqui.</a></p>
-        </div>
+    <div class="container" style="margin-top:10px;">
+            <div class="col-md-6">
+                <img class="img-responsive" src="~/images/deadpool.jpg" alt="Deadpool" />
+            </div>
+            <div class="col-md-6">
+                <h3>Ops...</h3>
+                <p>Sua pesquisa não encontrou nenhum registro.</p>
+                <p>Caso queira consultar alguns nomes para pesquisar <a href="https://pt.wikipedia.org/wiki/Universo_Marvel#Her%C3%B3is_Marvel">clique aqui.</a></p>
+            </div>                    
     </div>
 }
 

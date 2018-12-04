@@ -6,7 +6,7 @@
         }
     });
     $('#texto-pesquisa').on('keypress', function (e) {
-        if (e.which === '13') {
+        if (e.which == 13) {
             var texto = $('#texto-pesquisa').val();
             if (texto) {
                 window.location.href = urlPesquisar + '?textoPesquisa=' + texto.trim();
