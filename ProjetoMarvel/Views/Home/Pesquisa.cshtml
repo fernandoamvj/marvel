@@ -2,14 +2,35 @@
 @{
     ViewBag.Title = "Pesquisa";
 }
-
-<div class="row">
-    <div class="col-md-4">
-        <img class="img-responsive" src="@Model.UrlImagem" alt="@Model.Nome" />
+@if (!String.IsNullOrEmpty(Model.Nome))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <img class="img-responsive" src="@Model.UrlImagem" alt="@Model.Nome" />
+        </div>
+        <div class="col-md-8">
+            <h3 class="text-center">@Model.Nome</h3>
+            <p>@Model.Descricao</p>
+        </div>
     </div>
-    <div class="col-md-8">
-        <h3 class="text-center">@Model.Nome</h3>
-        <p>@Model.Descricao</p>
+    <div class="container">
+        <h2>Histórias</h2>
+        <ul class="list-group">
+            @foreach (var historia in Model.Historias)
+            {
+                <li class="list-group-item">@historia</li>
+            }
+        </ul>
     </div>
-</div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <h3 class="text-center">Ops...</h3>
+            <p>Sua pesquisa não encontrou nenhum registro.</p>
+            <p>Caso queira consultar alguns nomes para pesquisar <a href="https://pt.wikipedia.org/wiki/Universo_Marvel#Her%C3%B3is_Marvel">clique aqui.</a></p>
+        </div>
+    </div>
+}
 

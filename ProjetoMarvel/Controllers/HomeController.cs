@@ -77,9 +77,7 @@ namespace ProjetoMarvel.Controllers
                 {
                     PesquisaBusiness.InserePesquisa(textoPesquisa, obteveRetorno);
                 }
-
             }
-
             return View (personagem);
         }
     }
